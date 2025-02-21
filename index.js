@@ -29,9 +29,13 @@ async function main() {
     app.use("/api/auth", authRoutes);
     app.use("/api/user", userRoutes(db));
 
+    //err handle
+    app.get("/favicon.ico", (req, res) => res.status(204).end());
+    app.get("/favicon.png", (req, res) => res.status(204).end());
+
     // Root Endpoint
     app.get("/", (req, res) => {
-      res.send("cloudHostel server running");
+      res.send("TaskHandler server running");
     });
 
     // Start Server
