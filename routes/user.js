@@ -100,6 +100,26 @@ module.exports = (db) => {
     }
   });
 
+  //get single task by task id
+  router.get("/get-task/:email/:taskId", async (req, res) => {
+    try {
+      const { email, taskId } = req.params;
+      const taskIdNum = Number(taskId);
+      const query = { email: email };
+      const user = await userCollection.findOne(query);
+      if (!user) {
+        return res.status(404).send({ error: "User not found" });
+      }
+      const task = user.task.find((task) => task.taskId === taskIdNum);
+      if (!task) {
+        return res.status(404).send({ error: "Task not found" });
+      }
+      res.send(task);
+    } catch (error) {
+      res.status(500).send({ error: "Failed to get task" });
+    }
+  });
+
   // Edit task
   router.patch("/edit-task/:email/:taskId", async (req, res) => {
     try {
